@@ -6,9 +6,8 @@ import jwt_decode from 'jwt-decode'
 import { useNavigate } from "react-router-dom";
 import { GoogleLogin } from '@react-oauth/google';
 import { Select } from "antd";
-
+import "../../styles/AuthStyles.css"
 const { Option } = Select;
-
 const Register = () => {
 
     const [name, setName] = useState("")
@@ -57,6 +56,7 @@ const Register = () => {
     
     <h1>Register</h1>
 
+    <form onSubmit={handleSubmit} >
     <div className="mb-3">
                 <Select
                   bordered={false}
@@ -72,8 +72,6 @@ const Register = () => {
                   <Option value="1">Seller</Option>
                 </Select>
     </div>
-
-  <form onSubmit={handleSubmit}>
   <div className="mb-3">
     <input
       type="text"

@@ -4,6 +4,7 @@ import  { useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios"
 import { useNavigate } from "react-router-dom";
+import "../../styles/AuthStyles.css"
 
 
 const ForgotPassword = () => {
@@ -30,7 +31,7 @@ const ForgotPassword = () => {
     }
   return (
     <Layout title= " Forgot Password - Ecommercebookstore APP">
-        <div className="forgot">
+        <div className="register">
     
     <h1>Reset Password</h1>
 

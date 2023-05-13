@@ -104,3 +104,14 @@
   text-decoration: none !important;
   color: black !important;
 }
+
+
+.login {
+  margin: 0;
+  padding: 0;
+  height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+ 
+}
