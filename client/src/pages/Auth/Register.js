@@ -2,7 +2,12 @@ import React, { useState } from "react";
 import Layout from "../../components/Layout/Layout";
 import { toast } from "react-toastify";
 import axios from "axios"
+import jwt_decode from 'jwt-decode'
 import { useNavigate } from "react-router-dom";
+import { GoogleLogin } from '@react-oauth/google';
+import { Select } from "antd";
+
+const { Option } = Select;
 
 const Register = () => {
 
@@ -13,6 +18,7 @@ const Register = () => {
     const [pass1, setPass1] = useState("")
     const [pass2, setPass2] = useState("")
     const [answer, setAnswer] = useState("")
+    const [role, setRole] = useState(0)
     const navigate = useNavigate()
 
     const handleSubmit = async (e) => {
@@ -20,7 +26,7 @@ const Register = () => {
         try {
             const res = await axios.post(
                 `${process.env.REACT_APP_API}/api/v1/auth/register`,
-                {name,email,phone,address,pass1,pass2,answer});
+                {name,email,phone,address,pass1,pass2,answer,role});
             if(res.data.success){
                 toast.success(res.data.message)
                 navigate("/login")
@@ -30,11 +36,42 @@ const Register = () => {
             toast.error("Something went wrong.")
         }
     }
+    const handleGoogleLogin = async (n,e) => {
+      try {
+        console.log(n,e)
+          const res = await axios.post(
+              `${process.env.REACT_APP_API}/api/v1/auth/gsignup`,
+              {n,e});
+          if(res.data.success){
+              toast.success(res.data.message)
+              navigate("/login")
+          }
+      } catch (error) {
+          console.log(error)
+          toast.error("Something went wrong.")
+      }
+  }
     return(
         <Layout title="Register - Book Store">
   <div className="register">
     
     <h1>Register</h1>
+
+    <div className="mb-3">
+                <Select
+                  bordered={false}
+                  placeholder="Select Role "
+                  size="large"
+                  showSearch
+                  className="form-select mb-3"
+                  onChange={(value) => {
+                    setRole(value);
+                  }}
+                >
+                  <Option value="0">Buyer</Option>
+                  <Option value="1">Seller</Option>
+                </Select>
+    </div>
 
   <form onSubmit={handleSubmit}>
   <div className="mb-3">
@@ -125,9 +162,23 @@ const Register = () => {
   <button type="submit" className="btn btn-primary">
     Submit
   </button>
+  <br />
+      <h4>Sign Up with : </h4>
+      <GoogleLogin
+  onSuccess={credentialResponse => {
+    var userObj = jwt_decode(credentialResponse.credential)
+    console.log(userObj.name,userObj.email)
+    handleGoogleLogin(userObj.name,userObj.email)
+    console.log(credentialResponse);
+  }}
+  onError={() => {
+    console.log('Login Failed');
+  }}
+/>
+
 </form>
 
-        </div>
+      </div>
         </Layout>
     )
 }

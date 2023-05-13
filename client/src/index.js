@@ -9,10 +9,12 @@ import 'react-toastify/dist/ReactToastify.css'
 import { AuthProvider } from './context/auth';
 import { SearchProvider } from './context/search';
 import { CartProvider } from './context/cart';
+import {GoogleOAuthProvider} from "@react-oauth/google"
 import "antd/dist/reset.css";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+  <GoogleOAuthProvider clientId="17844522649-st5727v3qabtijgdvveg9ngsq944bdpo.apps.googleusercontent.com">
   <AuthProvider>
     <SearchProvider>
      <CartProvider>
@@ -23,7 +25,7 @@ root.render(
       </CartProvider>
     </SearchProvider>
   </AuthProvider>
-
+</GoogleOAuthProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

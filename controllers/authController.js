@@ -4,7 +4,7 @@ import JWT from "jsonwebtoken";
 
 export const registerController = async (req, res) => {
   try {
-    const { name, email, pass1, pass2, phone, address, answer } = req.body;
+    const { name, email, pass1, pass2, phone, address, answer, role } = req.body;
     //validations
     if (!name) {
       return res.send({ error: "Name is Required" });
@@ -26,6 +26,9 @@ export const registerController = async (req, res) => {
     }
     if (!answer) {
       return res.send({ error: "Answer is required" });
+    }
+    if (!role) {
+      return res.send({ error: "Role is required" });
     }
 
     if(pass1 != pass2){
@@ -50,6 +53,46 @@ export const registerController = async (req, res) => {
       address,
       password: hashedPassword,
       answer,
+      role
+    }).save();
+
+    res.status(201).send({
+      success: true,
+      message: "User Register Successfully",
+      user,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in Registeration",
+      error,
+    });
+  }
+};
+
+export const googleRegisterController = async (req, res) => {
+  try {
+    const { n, e} = req.body;
+    console.log(n, e)
+    //check user
+    const exisitingUser = await userModel.findOne({ email: e });
+    //exisiting user
+    if (exisitingUser) {
+      return res.status(200).send({
+        success: false,
+        message: "Already Registered please login",
+      });
+    }
+    //save
+    const user = await new userModel({
+      name: n,
+      email: e,
+      phone: "",
+      address: "",
+      password: "",
+      answer: "",
+      role: 0,
     }).save();
 
     res.status(201).send({
@@ -105,7 +148,53 @@ export const loginController = async (req, res) => {
         name: user.name,
         email: user.email,
         phone: user.phone,
-        adddress: user.address,
+        address: user.address,
+        role: user.role,
+      },
+      token,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in login",
+      error,
+    });
+  }
+};
+
+//google oauth login
+export const googleLoginController = async (req, res) => {
+  try {
+    const { e } = req.body;
+    //validation
+    if (!e) {
+      return res.status(404).send({
+        success: false,
+        message: "Invalid email",
+      });
+    }
+    //check user
+    const user = await userModel.findOne({ email: e });
+    if (!user) {
+      return res.status(404).send({
+        success: false,
+        message: "Email is not registerd",
+      });
+    }
+    //token
+    const token = await JWT.sign({ _id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
+    res.status(200).send({
+      success: true,
+      message: "login successfully",
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        address: user.address,
         role: user.role,
       },
       token,

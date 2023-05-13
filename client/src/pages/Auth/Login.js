@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import Layout from "../../components/Layout/Layout";
 import { toast } from "react-toastify";
 import axios from "axios"
+import jwt_decode from 'jwt-decode'
 import { useNavigate , useLocation} from "react-router-dom";
 import { useAuth } from "../../context/auth";
+import { GoogleLogin } from '@react-oauth/google';
+
 
 const Login = () => {
 
@@ -34,6 +37,28 @@ const Login = () => {
             toast.error("Something went wrong.")
         }
     }
+
+    const handleGoogleLogin = async (e) => {
+      try {
+        console.log(e)
+          const res = await axios.post(
+              `${process.env.REACT_APP_API}/api/v1/auth/glogin`,
+              {e});
+              if(res && res.data.success){
+                toast.success(res.data && res.data.message)
+                setAuth({
+                  ...auth,
+                  user: res.data.user,
+                  token: res.data.token,
+                })
+                localStorage.setItem('auth',JSON.stringify(res.data));
+                navigate(location.state || "/")
+            }
+        } catch (error) {
+            console.log(error)
+            toast.error("Something went wrong.")
+        }
+  }
     return(
         <Layout title="Register - Book Store">
   <div className="register">
@@ -78,6 +103,19 @@ const Login = () => {
   <button type="submit" className="btn btn-primary">
     Submit
   </button>
+  <br />
+      <h4>Log in with : </h4>
+      <GoogleLogin
+  onSuccess={credentialResponse => {
+    var userObj = jwt_decode(credentialResponse.credential)
+    console.log(userObj.email)
+    handleGoogleLogin(userObj.email)
+    console.log(credentialResponse);
+  }}
+  onError={() => {
+    console.log('Login Failed');
+  }}
+/>
 </form>
 
         </div>

@@ -5,6 +5,8 @@ import {
   testController,
   forgotPasswordController,
   updateProfileController,
+  googleRegisterController,
+  googleLoginController
 } from "../controllers/authController.js";
 import { isAdmin, requireSignIn } from "../middlewares/authMiddleware.js";
 
@@ -14,6 +16,11 @@ const router = express.Router();
 //routing
 //REGISTER || METHOD POST
 router.post("/register", registerController);
+
+//google oauth
+router.post("/gsignup", googleRegisterController);
+
+router.post("/glogin", googleLoginController);
 
 //LOGIN || POST
 router.post("/login", loginController);

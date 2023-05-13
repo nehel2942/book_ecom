@@ -73,6 +73,12 @@ const CartPage = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if(!auth?.user?.address || !auth?.user?.phone){
+      toast.error("Please Complete Your Profile.")
+    }
+  }, [])
   return (
     <Layout>
       <div className="container">
@@ -119,7 +125,6 @@ const CartPage = () => {
           </div>
           <div className="col-md-4 text-center">
             <h2>Cart Summary</h2>
-            <p>Total | Checkout | Payment</p>
             <hr />
             <h4>Total : {totalPrice()} </h4>
             {auth?.user?.address ? (
