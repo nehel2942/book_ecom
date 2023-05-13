@@ -3,6 +3,7 @@ import Layout from "../../components/Layout/Layout";
 import { toast } from "react-toastify";
 import axios from "axios"
 import { useNavigate } from "react-router-dom";
+import "../../styles/AuthStyles.css"
 
 const Register = () => {
 
@@ -36,7 +37,7 @@ const Register = () => {
     
     <h1>Register</h1>
 
-  <form onSubmit={handleSubmit}>
+  <form onSubmit={handleSubmit} >
   <div className="mb-3">
     <input
       type="text"

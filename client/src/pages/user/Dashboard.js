@@ -2,6 +2,7 @@ import React from 'react'
 import Layout from '../../components/Layout/Layout'
 import UserMenu from '../../components/Layout/UserMenu'
 import { useAuth } from '../../context/auth'
+import "../../styles/Dashboard.css";
 
 const Dashboard = () => {
 const [auth] = useAuth()
@@ -14,10 +15,11 @@ const [auth] = useAuth()
           <UserMenu />
           </div>
           <div className='col-md-3'>
-            <div className='card w-75 p3 '>
-              <h3>Name: {auth?.user?.name}</h3>
-              <h3>Email: {auth?.user?.email}</h3>
-              <h3>Address: {auth?.user?.address}</h3>
+            <div className='card w-200 p3 user-div'>
+              <h1>Your Details</h1>
+              <h3><strong>Name:</strong> {auth?.user?.name}</h3>
+              <h3><strong>Email:</strong> {auth?.user?.email}</h3>
+              <h3><strong>Address:</strong> {auth?.user?.address}</h3>
 
 
             </div>

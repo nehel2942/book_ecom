@@ -1,0 +1,20 @@
+
+
+.order-img{
+    width: 150px;
+    height: 130px;
+    object-fit: cover
+}
+
+.order-div{
+    margin-bottom: 50px;
+    background-color: rgb(231, 245, 255);
+}
+
+.image-div{
+    background-color: rgb(244, 247, 248)
+}
+
+h1{
+    color: rgb(108, 176, 245);
+}

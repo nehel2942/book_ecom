@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import DropIn from "braintree-web-drop-in-react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import "../styles/CartStyles.css";
 
 const CartPage = () => {
   const [auth, setAuth] = useAuth();
@@ -75,38 +76,44 @@ const CartPage = () => {
   };
   return (
     <Layout>
-      <div className="container">
-        <div className="row">
-          <div className="col-md-12">
-            <h1 className="text-center bg-light p-2 mb-1">
-              {`Hello ${auth?.token && auth?.user?.name}`}
-            </h1>
-            <h4 className="text-center">
+    <div className=" cart-page">
+      <div className="row">
+        <div className="col-md-12">
+          <h1 className="text-center bg-light p-2 mb-1">
+            {!auth?.user
+              ? "Hello Guest"
+              : `Hello  ${auth?.token && auth?.user?.name}`}
+            <p className="text-center">
               {cart?.length
                 ? `You Have ${cart.length} items in your cart ${
-                    auth?.token ? "" : "please login to checkout"
+                    auth?.token ? "" : "please login to checkout !"
                   }`
                 : " Your Cart Is Empty"}
-            </h4>
-          </div>
+            </p>
+          </h1>
         </div>
-        <div className="row">
-          <div className="col-md-8">
+      </div>
+      <div className="container ">
+        <div className="row ">
+          <div className="col-md-7  p-0 m-0">
             {cart?.map((p) => (
-              <div className="row mb-2 p-3 card flex-row">
+              <div className="row card flex-row" key={p._id}>
                 <div className="col-md-4">
                   <img
                     src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${p._id}`}
                     className="card-img-top"
                     alt={p.name}
-                    width="100px"
-                    height={"100px"}
+                    width="100%"
+                    height={"125px"}
+                    
                   />
                 </div>
-                <div className="col-md-8">
+                <div className="col-md-4">
                   <p>{p.name}</p>
                   <p>{p.description.substring(0, 30)}</p>
                   <p>Price : {p.price}</p>
+                </div>
+                <div className="col-md-4 cart-remove-btn">
                   <button
                     className="btn btn-danger"
                     onClick={() => removeCartItem(p._id)}
@@ -117,14 +124,14 @@ const CartPage = () => {
               </div>
             ))}
           </div>
-          <div className="col-md-4 text-center">
+          <div className="col-md-5 cart-summary ">
             <h2>Cart Summary</h2>
             <p>Total | Checkout | Payment</p>
             <hr />
             <h4>Total : {totalPrice()} </h4>
             {auth?.user?.address ? (
               <>
-                <div className="mb-3" key={auth?.user?._id}>
+                <div className="mb-3">
                   <h4>Current Address</h4>
                   <h5>{auth?.user?.address}</h5>
                   <button
@@ -153,13 +160,13 @@ const CartPage = () => {
                       })
                     }
                   >
-                    Please Login to checkout
+                    Plase Login to checkout
                   </button>
                 )}
               </div>
             )}
             <div className="mt-2">
-              {!clientToken || !cart?.length ? (
+              {!clientToken || !auth?.token || !cart?.length ? (
                 ""
               ) : (
                 <>
@@ -186,7 +193,8 @@ const CartPage = () => {
           </div>
         </div>
       </div>
-    </Layout>
+    </div>
+  </Layout>
   );
 };
 
