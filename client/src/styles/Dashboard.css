@@ -1,0 +1,10 @@
+.user-div{
+    width: 1000px;
+    padding: 40px;
+    font-weight: 400;
+    font-family: "Poppins",sans-serif;
+}
+
+.user-div > h1 {
+    color: rgb(64, 151, 205);
+}

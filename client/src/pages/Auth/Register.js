@@ -6,8 +6,9 @@ import jwt_decode from 'jwt-decode'
 import { useNavigate } from "react-router-dom";
 import { GoogleLogin } from '@react-oauth/google';
 import { Select } from "antd";
-
+import "../../styles/AuthStyles.css"
 const { Option } = Select;
+
 
 const Register = () => {
 
@@ -73,7 +74,7 @@ const Register = () => {
                 </Select>
     </div>
 
-  <form onSubmit={handleSubmit}>
+  <form onSubmit={handleSubmit} >
   <div className="mb-3">
     <input
       type="text"
